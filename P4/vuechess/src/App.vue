@@ -7,16 +7,19 @@ import { RouterLink, RouterView } from 'vue-router'
     <div class="wrapper">
       <ul>
         <li>
-          <RouterLink to="/">sign-up</RouterLink>
+          <RouterLink to="/">LogIn</RouterLink>
         </li>
         <li>
-          <RouterLink to="/">log-in</RouterLink>
+          <RouterLink to="/log-in">LogIn</RouterLink>
         </li>
         <li>
-          <RouterLink to="/">my-view</RouterLink>
+          <RouterLink to="/sign-up">SignUp</RouterLink>
         </li>
         <li>
-          <RouterLink to="/">my-view</RouterLink>
+          <RouterLink to="/log-out">LogOut</RouterLink>
+        </li>
+        <li>
+          <RouterLink to="/creategame">CreateGame</RouterLink>
         </li>
       </ul>
     </div>
