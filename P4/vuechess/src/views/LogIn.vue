@@ -12,7 +12,6 @@
 <script>
 import { ref } from 'vue';
 import { useTokenStore } from '@/stores/token';
-import { setup } from 'mocha'; //?
 
 export default {
   name: 'LogIn',

@@ -12,6 +12,7 @@ import { RouterLink, RouterView } from 'vue-router'
         <li>
           <RouterLink to="/log-in">LogIn</RouterLink>
         </li>
+        <!------
         <li>
           <RouterLink to="/sign-up">SignUp</RouterLink>
         </li>
@@ -21,6 +22,7 @@ import { RouterLink, RouterView } from 'vue-router'
         <li>
           <RouterLink to="/creategame">CreateGame</RouterLink>
         </li>
+      -->
       </ul>
     </div>
   </header>
