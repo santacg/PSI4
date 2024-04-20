@@ -6,6 +6,7 @@ import { RouterLink, RouterView } from 'vue-router'
   <header>
     <div class="wrapper">
       <ul>
+        <!---
         <li>
           <RouterLink to="/">LogIn</RouterLink>
         </li>
@@ -13,9 +14,6 @@ import { RouterLink, RouterView } from 'vue-router'
           <RouterLink to="/log-in">LogIn</RouterLink>
         </li>
         <!------
-        <li>
-          <RouterLink to="/sign-up">SignUp</RouterLink>
-        </li>
         <li>
           <RouterLink to="/log-out">LogOut</RouterLink>
         </li>

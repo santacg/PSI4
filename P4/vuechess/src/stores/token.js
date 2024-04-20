@@ -1,6 +1,6 @@
-import { dedineStore } from 'pinia'
+import { defineStore } from 'pinia'
 
-export const useTokenStore = dedineStore("tokens",
+export const useTokenStore = defineStore("tokens",
   {
     // id: "token",
     state: () => ({
