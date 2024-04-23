@@ -1,12 +1,18 @@
 <template>
-  <div class="form">
-    <h1>Log In</h1>
-    <form @submit.prevent="logIn">
-      <input type="username" id="username" v-model="username" required />
-      <input type="password" id="password" v-model="password" required />
-      <button type="submit">Log In</button>
-    </form>
-  </div>
+  <body>
+    <div class="wrapper">
+      <form class="log-in-form" @submit.prevent="logIn">
+        <h1>Log In</h1>
+        <div class="input-box">
+          <input type="username" id="username" placeholder="username" v-model="username" required />
+        </div>
+        <div class="input-box">
+          <input type="password" id="password" placeholder="password" v-model="password" requiered />
+        </div>
+        <button type="submit">Log In</button>
+      </form>
+    </div>
+  </body>
 </template>
 
 <script>
@@ -63,3 +69,37 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+body {
+}
+
+.wrapper {
+  position: absolute;
+  display: flex;
+  min-width: 550px;
+  background: url(../assets/img2.png);
+  min-height: 993px;
+  justify-content: center;
+}
+
+.wrapper .log-in-form { 
+  place-content: center;
+}
+
+.wrapper .log-in-form .input-box {
+  width: 100%;
+  height: 50px;
+  margin: 30px 0;
+}
+
+.input-box input {
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(255, 255, 255, .4);
+  border-radius: 40px;
+  padding: 20px 45px 20px 20px;
+  font-size: 15px;
+  color: whitesmoke;
+}
+</style>

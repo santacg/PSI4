@@ -15,6 +15,9 @@ import { RouterLink, RouterView } from 'vue-router'
         </li>
         <!------
         <li>
+          <RouterLink to="/sign-up">SignUp</RouterLink>
+        </li>
+        <li>
           <RouterLink to="/log-out">LogOut</RouterLink>
         </li>
         <li>
