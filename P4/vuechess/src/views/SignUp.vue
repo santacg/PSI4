@@ -1,22 +1,22 @@
 <template>
-  <header>
-  </header>
-  <div class="wrapper">
-    <form class="sign-up-form" @submit.prevent="signUp">
-      <h1>Mychess Sign Up</h1>
-      <div class="input-boxes">
-        <div class="input-box">
-          <input type="text" placeholder="Email Address" id="emailAddress" v-model="emailAddress" required>
+  <div class="container">
+    <div class="wrapper">
+      <form class="sign-up-form" @submit.prevent="signUp">
+        <h1>Mychess Sign Up</h1>
+        <div class="input-boxes">
+          <div class="input-box">
+            <input type="text" placeholder="Email Address" id="emailAddress" v-model="emailAddress" required>
+          </div>
+          <div class="input-box">
+            <input type="password" placeholder="Password" id="password" v-model="password" required>
+          </div>
+          <div class="input-box">
+            <input type="password" placeholder="Confirm Password" id="confirmPassword" v-model="confirmPassword" required>
+          </div>
         </div>
-        <div class="input-box">
-          <input type="password" placeholder="Password" id="password" v-model="password" required>
-        </div>
-        <div class="input-box">
-          <input type="password" placeholder="Confirm Password" id="confirmPassword" v-model="confirmPassword" required>
-        </div>
-      </div>
-      <button type="submit" class="btn">Sign Up</button>
-    </form>
+        <button type="submit" class="btn">Sign Up</button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -79,42 +79,50 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  display: flex;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url(../assets/im3.jpeg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  place-content: center;
+  align-items: center;
+}
+
 .wrapper {
-  width: 450px;
+  width: 425px;
+  height: 450px;
   background: transparent;
-  border: 4px;
   backdrop-filter: blur(30px);
-  box-shadow: 0 0 10px rgba(0, 0, 0, .7);
+  box-shadow: 0 0 10px rgba(0, 0, 0, .9);
   border-radius: 20px;
   padding: 30px 40px;
-  display: flex;
   place-content: center;
   text-align: center;
 }
 
 .wrapper .sign-up-form h1 {
-  font-weight: bolder;
-}
-
-.wrapper .sign-up-form .input-boxes {
-  text-align: left;
+  font-weight: bold;
+  font-size: 38px;
 }
 
 .wrapper .sign-up-form .input-box {
-  width: 100%;
   height: 50px;
   margin: 30px 0;
 }
 
 .input-box input {
-  width: 100%;
+  width: 300px;
   height: 100%;
   background: transparent;
   outline: none;
   border: 2px solid rgba(255, 255, 255, .4);
   border-radius: 40px;
-  padding: 20px 45px 20px 20px;
-  font-size: 15px;
+  padding: 20px 20px;
+  font-size: 14px;
   color: whitesmoke;
 }
 
@@ -123,8 +131,8 @@ export default {
 }
 
 .wrapper .sign-up-form .btn {
-  width: 50%;
-  height: 45px;
+  width: 125px;
+  height: 40px;
   background: white;
   border: none;
   outline: none;
@@ -135,11 +143,11 @@ export default {
 
 .wrapper .sign-up-form .btn:hover {
   border-color: black;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, .4);
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, .8);
 }
 
 .wrapper .sign-up-form .btn:active {
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
-  transform: translateY(2px);
+  transform: translateY(4px);
 }
 </style>
