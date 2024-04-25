@@ -8,13 +8,26 @@
         <a><router-link class="signUp" to="/sign-up">Sign Up</router-link></a>
       </li>
       <li class="nav-item">
-        <a><router-link class="logOut" to="/sign-up">Log Out</router-link></a>
+        <a><router-link class="logOut" to="/log-out" v-if="store.isAuthenticated">Log Out</router-link></a>
+      </li>
+      <li class="nav-item">
+        <a><router-link class="createGame" to="/creategame" v-if="store.isAuthenticated">Create Game</router-link></a>
       </li>
     </ul>
   </nav>
 </template>
 
 <script>
+import { useTokenStore } from '@/stores/token';
+export default {
+  name: "NAVHeader",
+  setup(props, ctx) {
+    const store = useTokenStore();
+      return {
+        store,
+      };
+  },
+};
 </script>
 
 <style scoped>
