@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LogIn from '../views/LogIn.vue'
 import SignUp from '../views/SignUp.vue'
+import LogOut from '../views/LogOut.vue'
+import CreateGame from '../views/CreateGame.vue'
 
 
 const router = createRouter({
@@ -21,7 +23,6 @@ const router = createRouter({
       name: 'LogIn',
       component: LogIn
     },
-    /*
     {
       path: '/log-out',
       name: 'LogOut',
@@ -32,7 +33,6 @@ const router = createRouter({
       name: 'CreateGame',
       component: CreateGame
     }
-    */
   ]
 })
 

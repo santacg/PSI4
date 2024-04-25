@@ -13,7 +13,7 @@
       </p>
     </div>
     <div class="content-right">
-      <form class="sign-up-form" @submit.prevent="logIn">
+      <form class="log-in-form" @submit.prevent="logIn">
         <h1>MyChess Log In</h1>
         <div class="input-boxes">
           <div class="input-box">
@@ -127,7 +127,7 @@ export default {
   height: 100%;
 }
 
-.content-right .sign-up-form {
+.content-right .log-in-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -139,12 +139,12 @@ export default {
   box-shadow: 0 0 20px rgba(0, 0, 0, .85);
 }
 
-.sign-up-form h1 {
+.log-in-form h1 {
   font-weight: bolder;
   font-size: 38px;
 }
 
-.content-right .sign-up-form .input-box {
+.content-right .log-in-form .input-box {
   margin: 30px 0;
 }
 
@@ -164,7 +164,7 @@ export default {
   color: rgba(255, 255, 255, 0.4);
 }
 
-.sign-up-form .btn {
+.log-in-form .btn {
   width: 125px;
   height: 45px;
   background: white;
@@ -175,12 +175,12 @@ export default {
   transition: box-shadow 0.3s ease, transform 0.1s ease;
 }
 
-.sign-up-form .btn:hover {
+.log-in-form .btn:hover {
   border-color: black;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, .8);
 }
 
-.sign-up-form .btn:active {
+.log-in-form .btn:active {
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
   transform: translateY(4px);
 }

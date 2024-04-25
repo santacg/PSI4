@@ -10,7 +10,7 @@
                 </select>
                 <button type="submit" class="btn">Join!</button>
                 <div class="game-id" style="display: none; ">
-                    <label class="game-id-label" for="game-id">Enter your game ID:</label>
+                    <label class="game-id-label" for="game-id">Enter your game ID: </label>
                     <input type="number">
                 </div>
             </form>
@@ -22,6 +22,21 @@
 import { ref } from 'vue';
 import router from '../router';
 
+/* Despliegue del ID al pulsar la opción "Join a friend's game" */
+document.addEventListener('DOMContentLoaded', function () {
+    const selection = document.querySelector('select[name="game-selection"]');
+    const gameIdSection = document.querySelector('.game-id');
+
+    gameIdSection.style.display = 'none';
+
+    selection.addEventListener('change', function () {
+        if (selection.value === 'id-game') {
+            gameIdSection.style.display = 'block';
+        } else {
+            gameIdSection.style.display = 'none';
+        }
+    });
+});
 export default {
     name: 'CreateGame',
     setup() {
@@ -78,7 +93,7 @@ export default {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-image: url(../assets/img2.png);
+    background-image: url(../assets/img5.png);
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -99,7 +114,7 @@ export default {
     text-align: center;
 }
 
-.create-game-form {
+.wrapper .create-game-form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -107,40 +122,55 @@ export default {
     border-radius: 5px;
 }
 
-.create-game-form h1 {
+.wrapper .create-game-form h1 {
     font-weight: bold;
-    color: rgb(255, 255, 255);
-    margin-bottom: 20px;
-}
-
-.create-game-form select {
-    margin-bottom: 20px;
-    padding: 10px;
-    width: 100%;
-}
-
-.create-game-form button {
-    padding: 10px;
-    width: 100%;
-    background-color: #4CAF50;
     color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    margin-bottom: 20px;
+    font-size: 38px;
 }
 
-.create-game-form button:hover {
-    background-color: #45a049;
-}
-
-
-.game-id-label {
-    color: rgb(255, 255, 255);
-    margin-bottom: 10px;
-}
-
-.game-id input {
+.wrapper .create-game-form select {
+    margin-bottom: 20px;
     padding: 10px;
     width: 100%;
+    background: transparent;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .4);
+    border-radius: 40px;
+    padding: 20px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    color: whitesmoke;
+}
+
+.wrapper .create-game-form button {
+    padding: 10px;
+    width: 100%;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    border: none;
+    border-radius: 40px;
+    font-weight: bolder;
+    transition: box-shadow 0.3s ease, transform 0.1s ease;
+}
+
+.wrapper .create-game-form button:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.wrapper .game-id {
+    display: none;
+    margin-top: 20px;
+}
+
+.wrapper .game-id .game-id-label {
+    color: white;
+}
+
+.wrapper .game-id input {
+    padding: 5px;
+    width: 15%;
+    border-radius: 5px;
 }
 </style>
