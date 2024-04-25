@@ -39,7 +39,6 @@ export default {
         } else {
           throw new Error('Failed to log out');
         }
-
       } catch (error) {
         console.error('Error logging out');
         alert(error.message);

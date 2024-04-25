@@ -4,10 +4,14 @@ export const useTokenStore = defineStore("tokens",
   {
     // id: "token",
     state: () => ({
+      user_id: null,
       token: null,
-      isAuthenticated: false
+      isAuthenticated: false,
     }),
     actions: {
+      setUserID(user_id) {
+        this.user_id = user_id;
+      },
       setToken(token) {
         this.token = token;
         this.isAuthenticated = true;

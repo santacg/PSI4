@@ -32,6 +32,7 @@
 <script>
 import { ref } from 'vue';
 import { useTokenStore } from '@/stores/token';
+import router from '../router';
 
 export default {
   name: 'LogIn',
@@ -48,7 +49,7 @@ export default {
       const store = useTokenStore();
       const baseUrl = 'http://localhost:8000/api/v1/'; //mala práctica: debe hacerse una variable de entorno
       try {
-        const response = await fetch(baseUrl + 'token/login/',
+        const response = await fetch(baseUrl + 'mytokenlogin/',
           {
             method: 'POST',
             headers: {
@@ -65,11 +66,11 @@ export default {
 
         if (data && data.auth_token) {
           store.setToken(data.auth_token);
+          store.setUserID(data.user_id);
+          router.push('/creategame');
         } else {
           console.log('Error: Authentication token not found.');
         }
-        console.log('username:', username.value);
-        console.log('token:', store.token);
       } catch (error) {
         console.error('Log in error: ', error.message);
         alert(error.message);
