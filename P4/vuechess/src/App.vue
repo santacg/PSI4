@@ -1,31 +1,11 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import NAVHeader from './components/NAVHeader.vue'
 </script>
 
 <template>
   <header>
-    <div class="wrapper">
-      <ul>
-        <!---
-        <li>
-          <RouterLink to="/">LogIn</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/log-in">LogIn</RouterLink>
-        </li>
-        <!------
-        <li>
-          <RouterLink to="/sign-up">SignUp</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/log-out">LogOut</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/creategame">CreateGame</RouterLink>
-        </li>
-      -->
-      </ul>
-    </div>
+  <NAVHeader/>
   </header>
   <RouterView />
 </template>

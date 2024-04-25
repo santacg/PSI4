@@ -32,10 +32,10 @@
 <script>
 import { ref } from 'vue';
 import { useTokenStore } from '@/stores/token';
-import NAVHeader from '@/components/NAVHeader.vue'
 
 export default {
   name: 'LogIn',
+
   setup() {
     const username = ref('');
     const password = ref('');
