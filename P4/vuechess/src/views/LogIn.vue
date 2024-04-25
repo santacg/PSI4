@@ -1,4 +1,6 @@
 <template>
+  <header>
+  </header>
   <div class="container">
     <div class="content-left">
       <h3>Welcome to MyChess
@@ -30,6 +32,7 @@
 <script>
 import { ref } from 'vue';
 import { useTokenStore } from '@/stores/token';
+import NAVHeader from '@/components/NAVHeader.vue'
 
 export default {
   name: 'LogIn',
