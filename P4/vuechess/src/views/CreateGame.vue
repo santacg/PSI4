@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="wrapper">
-      <form @submit.prevent="createGame">
+      <form class="create-game-box" @submit.prevent="createGame">
         <h1>Create a chess game!</h1>
         <select name="game-selection">
           <option hidden>Select a game type</option>
@@ -9,13 +9,35 @@
           <option value="id-game">Join specific game</option>
         </select>
         <button type="submit" class="btn">Join!</button>
+        <div class="game-id" style="display: none; ">
+          <label class="game-id-label" for="game-id">Enter your game ID: </label>
+          <input type="number">
+        </div>
       </form>
     </div>
   </div>
 </template>
 
+
 <script>
 import { useTokenStore } from '@/stores/token';
+
+/* Despliegue del ID al pulsar la opción "Join a friend's game" */
+/* PROBLEMA: No se despliega al estar logueado*/
+document.addEventListener('DOMContentLoaded', function () {
+  const selection = document.querySelector('select[name="game-selection"]');
+  const gameIdSection = document.querySelector('.game-id');
+
+  gameIdSection.style.display = 'none';
+
+  selection.addEventListener('change', function () {
+    if (selection.value === 'id-game') {
+      gameIdSection.style.display = 'block';
+    } else {
+      gameIdSection.style.display = 'none';
+    }
+  });
+});
 
 export default {
   name: 'CreateGame',
@@ -59,7 +81,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 .container {
@@ -133,7 +154,7 @@ export default {
   background-color: rgba(255, 255, 255, 0.8);
 }
 
-.wrapper .create-game-box.btn:active {
+.wrapper .create-game-box.button:active {
   transform: translateY(4px);
 }
 
