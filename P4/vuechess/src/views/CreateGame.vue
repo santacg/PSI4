@@ -35,7 +35,7 @@ export default {
         });
         const data = await response.json();
 
-        if (response.status !== 201) {
+        if (response.status !== 201 && response.status !== 200) {
           if (data.detail) {
             throw new Error(data.detail);
           }
@@ -44,7 +44,7 @@ export default {
           }
         }
 
-        if (data.id) {
+        if (response.status === 201) {
           alert('Game created with ID: ' + data.id);
         }
         else {
