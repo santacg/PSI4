@@ -61,19 +61,24 @@ export default {
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(data.detail || 'Failed to log in.');
+          if (data.non_field_errors) {
+            throw new Error(data.non_field_errors);
+          }
+          else {
+            throw new Error('Log in unsuccesfull');
+          }
         }
 
         if (data && data.auth_token) {
           store.setToken(data.auth_token);
           store.setUserID(data.user_id);
+          alert('Log in succesfull! redirecting to game creation');
           router.push('/creategame');
         } else {
-          console.log('Error: Authentication token not found.');
+          throw new Error('Authentication token not found');
         }
       } catch (error) {
-        console.error('Log in error: ', error.message);
-        alert(error.message);
+        alert(error);
       }
     };
 

@@ -36,13 +36,22 @@ export default {
         const data = await response.json();
 
         if (response.status !== 201) {
-          throw new Error(data.detail);
+          if (data.detail) {
+            throw new Error(data.detail);
+          }
+          else {
+            throw new Error('Failed to create a game or join an existing one');
+          }
         }
 
-        alert('Game created with ID: ' + data.id);
+        if (data.id) {
+          alert('Game created with ID: ' + data.id);
+        }
+        else {
+          alert('Joined to existing game')
+        }
       } catch (error) {
-        console.error('Create game error ', error.message);
-        alert(error.message);
+        alert(error);
       }
     };
 

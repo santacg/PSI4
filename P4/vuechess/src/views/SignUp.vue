@@ -33,7 +33,7 @@ export default {
 
     const signUp = async () => {
       if (password.value != confirmPassword.value) {
-        alert('Password do not match');
+        alert('Passwords do not match');
         return;
       }
 
@@ -57,14 +57,18 @@ export default {
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(data.detail || 'Failed to sing up.');
+          if (data.username) {
+            throw new Error(data.username);
+          }
+          else {
+            throw new Error('Sign up unsuccesfull');
+          }
         }
 
-        console.log('SignUp request successful, redirecting to logIn');
+        alert('Sign up succesfull! redirecting to log in');
         router.push('/log-in');
       } catch (error) {
-        console.error('Sign up error: ', error.message);
-        alert(error.message);
+        alert(error);
       }
     };
 

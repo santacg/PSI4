@@ -33,6 +33,7 @@ export default {
 <style scoped>
 .navbar {
   padding: 15px 0;
+  background-color: rgb(31, 31, 31);
 }
 
 .nav-links {

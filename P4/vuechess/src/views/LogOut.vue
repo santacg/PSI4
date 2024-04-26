@@ -35,13 +35,13 @@ export default {
 
         if (response.status === 204) {
           store.removeToken();
+          alert('Log out sucessfull, redirecting to home page');
           setTimeout(() => router.push('/log-in'), 5000);
         } else {
           throw new Error('Failed to log out');
         }
       } catch (error) {
-        console.error('Error logging out');
-        alert(error.message);
+        alert(error);
       }
     };
     onBeforeMount(() => {
