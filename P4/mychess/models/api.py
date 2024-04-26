@@ -44,7 +44,7 @@ class ChessGameViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, viewset
     # Actualiza una partida pendiente para unirse a ella.
     def update(self, request, game, *args, **kwargs):
         # Comprueba que la partida esté pendiente
-        if game.status != 'pending':
+        if game.status.upper() != 'PENDING':
             return Response({'detail': 'Game is not pending'}, status=status.HTTP_400_BAD_REQUEST)
         # Actualiza la partida para unirse a ella
         update_data = {'status': 'ACTIVE'}

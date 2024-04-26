@@ -21,7 +21,7 @@
 import { useTokenStore } from '@/stores/token';
 export default {
   name: "NAVHeader",
-  setup(props, ctx) {
+  setup() {
     const store = useTokenStore();
       return {
         store,
