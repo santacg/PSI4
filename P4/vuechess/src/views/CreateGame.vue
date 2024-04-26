@@ -39,9 +39,7 @@ export default {
           throw new Error(data.detail);
         }
 
-        alert(response.data.game_id);
-        const game = data.game;
-        alert('Game created with ID: ' + game);
+        alert('Game created with ID: ' + data.id);
       } catch (error) {
         console.error('Create game error ', error.message);
         alert(error.message);
