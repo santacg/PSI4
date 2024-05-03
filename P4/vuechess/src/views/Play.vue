@@ -1,9 +1,61 @@
 <script setup>
-import { ref, nextTick } from 'vue';
+import { ref, reactive, nextTick, onMounted, onUnmounted } from 'vue';
+import { useTokenStore } from '../stores/token';
+import { useGameStore } from '../stores/game';
 import { TheChessboard } from "vue3-chessboard";
 import "vue3-chessboard/style.css"
 
 const moves = ref([]);
+const storeToken = useTokenStore();
+const storeGame = useGameStore();
+const url = 'ws://localhost:8000/ws/play/' + storeGame.game_id + '/token/' + storeToken.token + '/';
+const gameState = ref(null);
+const socket = new WebSocket(url);
+
+let boardAPI;
+const playerColor = storeGame.player_color;
+const boardConfig = reactive({
+  coordinates: true,
+  orientation: playerColor,
+  viewOnly: true,
+});
+
+onMounted(() => {
+  socket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    if (data.type === 'game') {
+      gameState.value = data.status;
+      if (data.status === 'ACTIVE') {
+        boardConfig.viewOnly = false;
+      }
+      else {
+        boardConfig.viewOnly = true;
+      }
+      alert("Status: " + data.status);
+    }
+    else if (data.type === 'move') {
+      boardAPI?.move({ from: data.from, to: data.to, promotion: data.promotion });
+    }
+    else {
+      alert("Error: " + data.message + " Status: " + data.status + " PlayerID: " + data.playerID);
+      boardAPI?.undoLastMove();
+    }
+  }
+});
+
+function sendMove(move) {
+  const promotion = '';
+  if (move.promotion) {
+    promotion = move.promotion;
+  }
+  socket.send(JSON.stringify({
+    'type': 'move',
+    'from': move.from,
+    'to': move.to,
+    'playerID': storeToken.user_id,
+    'promotion': promotion
+  }));
+};
 
 function handleMove(move) {
   const lastMove = moves.value[moves.value.length - 1];
@@ -16,6 +68,7 @@ function handleMove(move) {
   }
 
   scrollToBottom();
+  sendMove(move);
 }
 
 function scrollToBottom() {
@@ -37,8 +90,9 @@ function handleStalemate() {
 <template>
   <div class="container">
     <div class="chessboard-box">
-      <TheChessboard @checkmate="handleCheckmate" @move="handleMove" @stalemate="handleStalemate"
-        @promotion="handlePromotion" />
+      <TheChessboard :board-config="boardConfig" :player-color="playerColor" @checkmate="handleCheckmate"
+        @move="handleMove" @stalemate="handleStalemate" @promotion="handlePromotion"
+        @board-created="(api) => (boardAPI = api)" reactive-config />
     </div>
     <div class="moves-box">
       <div class="wrapper">
@@ -85,7 +139,7 @@ function handleStalemate() {
 }
 
 .wrapper {
-  min-width: 320px;
+  min-width: 350px;
   min-height: 700px;
   max-height: 700px;
   overflow-y: auto;
@@ -100,7 +154,8 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
   border: 1px solid white;
   padding: 8px;
   text-align: center;

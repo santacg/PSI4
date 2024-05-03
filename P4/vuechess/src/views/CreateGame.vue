@@ -22,7 +22,8 @@
 <script>
 import { useTokenStore } from '@/stores/token';
 import { useGameStore } from '@/stores/game';
- 
+import router from '../router';
+
 /* Despliegue del ID al pulsar la opción "Join a friend's game" */
 /* PROBLEMA: No se despliega al estar logueado*/
 document.addEventListener('DOMContentLoaded', function () {
@@ -44,18 +45,18 @@ export default {
   name: 'CreateGame',
   setup() {
     const createGame = async () => {
-      const store = useTokenStore();
+      const storeToken = useTokenStore();
       const gameStore = useGameStore();
       const baseUrl = 'http://localhost:8000/api/v1';
       try {
         const response = await fetch(baseUrl + '/games/', {
           method: 'POST',
           headers: {
-            'Authorization': 'token ' + store.token,
+            'Authorization': 'token ' + storeToken.token,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ user_id: store.user_id }),
+          body: JSON.stringify({ user_id: storeToken.user_id }),
         });
         const data = await response.json();
 
@@ -68,12 +69,21 @@ export default {
           }
         }
 
-        if (response.status === 201) {
-          gameStore.setGameID(data.id);
-          alert('Game created with ID: ' + gameStore.game_id);
+        gameStore.setGameID(data.id);
+        if (data.whitePlayer === storeToken.user_id) {
+          gameStore.setPlayerColor('white');
         }
         else {
-          alert('Joined to existing game')
+          gameStore.setPlayerColor('black');
+        }
+
+        if (response.status === 201) {
+          alert('Game created with ID: ' + gameStore.game_id + '  playing as ' + gameStore.player_color);
+          router.push('/play');
+        }
+        else {
+          alert('Joined to existing as ' + gameStore.player_color + ' to a game with ID: ' + gameStore.game_id);
+          router.push('/play');
         }
       } catch (error) {
         alert(error);

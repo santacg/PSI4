@@ -13,6 +13,14 @@ class ChessConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         # Obtiene el id de la partida y el usuario a partir de la URL
         self.gameID = self.scope['url_route']['kwargs']['gameID']
+        # Obtiene el token del usuario
+        self.token = self.scope['url_route']['kwargs'].get('token')
+
+        # Para que sea compatible con los test
+        if not self.token:
+            self.token = self.scope['query_string'].decode()
+
+        # Obtiene la partida a traves del ID
         self.game = await self.get_game_by_id(self.gameID)
         # Comprueba que la partida exista
         if self.game is None:
@@ -25,9 +33,9 @@ class ChessConsumer(AsyncWebsocketConsumer):
             }))
             await self.close()
             return
+
         # Obtiene el usuario a partir del token
-        token = self.scope['query_string'].decode()
-        self.user = await self.get_user_by_token(token)
+        self.user = await self.get_user_by_token(self.token)
         # Comprueba que el usuario esté en la partida
         if self.user is None or not await self.is_user_in_game(self.user, self.game):
             await self.accept()
@@ -59,7 +67,6 @@ class ChessConsumer(AsyncWebsocketConsumer):
                 _from = data['from']
                 to = data['to']
                 playerID = data['playerID']
-                promotion = None
                 promotion = data['promotion']
         # Crea un nuevo movimiento, se llama a save con la creación y en ese método se comprueba la validez del movimiento.
                 await sync_to_async(ChessMove.objects.create)(
