@@ -44,6 +44,7 @@ export default {
   setup() {
     const createGame = async () => {
       const store = useTokenStore();
+      const storeGame = useGameStore();
       const baseUrl = 'http://localhost:8000/api/v1';
       try {
         const response = await fetch(baseUrl + '/games/', {
@@ -67,6 +68,7 @@ export default {
         }
 
         if (response.status === 201) {
+          storeGame.setGameID = data.id;
           alert('Game created with ID: ' + data.id);
         }
         else {
