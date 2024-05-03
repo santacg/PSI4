@@ -21,7 +21,8 @@
 
 <script>
 import { useTokenStore } from '@/stores/token';
-
+import { useGameStore } from '@/stores/game';
+ 
 /* Despliegue del ID al pulsar la opción "Join a friend's game" */
 /* PROBLEMA: No se despliega al estar logueado*/
 document.addEventListener('DOMContentLoaded', function () {
@@ -44,7 +45,7 @@ export default {
   setup() {
     const createGame = async () => {
       const store = useTokenStore();
-      const storeGame = useGameStore();
+      const gameStore = useGameStore();
       const baseUrl = 'http://localhost:8000/api/v1';
       try {
         const response = await fetch(baseUrl + '/games/', {
@@ -68,8 +69,8 @@ export default {
         }
 
         if (response.status === 201) {
-          storeGame.setGameID = data.id;
-          alert('Game created with ID: ' + data.id);
+          gameStore.setGameID(data.id);
+          alert('Game created with ID: ' + gameStore.game_id);
         }
         else {
           alert('Joined to existing game')

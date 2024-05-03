@@ -27,8 +27,11 @@ class ChessGameViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, viewset
     # Crea una partida si no hay ninguna pendiente, o se une a una partida pendiente.
     def create(self, request, *args, **kwargs):
         # Busca una partida pendiente
-        game = ChessGame.objects.filter(
-            Q(whitePlayer=None) | Q(blackPlayer=None)).first()
+        game = ChessGame.objects.exclude(
+            Q(whitePlayer=self.request.user) | Q(blackPlayer=self.request.user)
+            ).filter(
+            Q(whitePlayer=None) | Q(blackPlayer=None)
+            ).first()
         if game:
             return self.update(request, game, *args, **kwargs)
         # Crea una partida en estado pendiente
