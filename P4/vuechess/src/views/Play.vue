@@ -6,6 +6,7 @@ import { TheChessboard } from "vue3-chessboard";
 import "vue3-chessboard/style.css"
 
 const moves = ref([]);
+const materialDifference = ref(null);
 const storeToken = useTokenStore();
 const storeGame = useGameStore();
 const url = 'ws://localhost:8000/ws/play/' + storeGame.game_id + '/token/' + storeToken.token + '/';
@@ -14,6 +15,7 @@ const socket = new WebSocket(url);
 
 let boardAPI;
 const playerColor = storeGame.player_color;
+
 const boardConfig = reactive({
   coordinates: true,
   orientation: playerColor,
@@ -44,7 +46,7 @@ onMounted(() => {
 });
 
 function sendMove(move) {
-  const promotion = '';
+  let promotion = '';
   if (move.promotion) {
     promotion = move.promotion;
   }
@@ -68,7 +70,13 @@ function handleMove(move) {
   }
 
   scrollToBottom();
-  sendMove(move);
+
+  const moveColor = move.color === 'w' ? 'white' : 'black';
+  if (moveColor === playerColor)
+    sendMove(move);
+
+  const materialCounts = boardAPI?.getMaterialCount();
+  materialDifference.value = materialCounts ? materialCounts.materialDiff : 0;
 }
 
 function scrollToBottom() {
@@ -85,13 +93,21 @@ function handleCheckmate(isMated) {
 function handleStalemate() {
   alert('Stalemate');
 }
+
+function handleDraw() {
+  alert('Draw');
+}
 </script>
 
 <template>
   <div class="container">
     <div class="chessboard-box">
+      <div class="game-info">
+        <p class="game-id">Game ID: {{ storeGame.game_id }}</p>
+        <p class="material-difference">Material Difference: {{ materialDifference }}</p>
+      </div>
       <TheChessboard :board-config="boardConfig" :player-color="playerColor" @checkmate="handleCheckmate"
-        @move="handleMove" @stalemate="handleStalemate" @promotion="handlePromotion"
+        @move="handleMove" @stalemate="handleStalemate" @promotion="handlePromotion" @draw="handleDraw"
         @board-created="(api) => (boardAPI = api)" reactive-config />
     </div>
     <div class="moves-box">
@@ -160,5 +176,19 @@ td {
   padding: 8px;
   text-align: center;
 }
-</style>
 
+
+.game-info {
+  text-align: center;
+  color: whitesmoke;
+}
+
+.game-id, .material-difference {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.material-difference {
+  margin-right: 55px;
+}
+</style>

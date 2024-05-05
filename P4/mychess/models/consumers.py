@@ -8,7 +8,7 @@ from asgiref.sync import sync_to_async
 import chess
 
 # Consumidor de WebSockets para el juego de ajedrez.
-# Autor: Eduardo Junoy Ortega
+# Autor: Carlos García Santa 
 class ChessConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         # Obtiene el id de la partida y el usuario a partir de la URL
@@ -76,14 +76,14 @@ class ChessConsumer(AsyncWebsocketConsumer):
                     move_to=to,
                     promotion=promotion
                 )
-        # Envía el movimiento al otro jugador.
-                await self.move_cb('move', _from, to, playerID, promotion, None)
                 board = chess.Board(self.game.board_state)
-        # Si es jaque mate, ahogado, insuficiente material, 75 movimientos o 5 repeticiones.
+                # Si es jaque mate, ahogado, insuficiente material, 75 movimientos o 5 repeticiones.
                 if board.is_checkmate() or board.is_stalemate() or board.is_insufficient_material() or board.is_seventyfive_moves() or board.is_fivefold_repetition():
                     self.game.status = 'FINISHED'
                     self.game.winner = self.user
-                    self.game.save()
+                    await sync_to_async(self.game.save)()
+                # Envía el movimiento al otro jugador.
+                await self.move_cb('move', _from, to, playerID, promotion, None)
             except ValidationError:
                 message = f"Error: invalid move (game is not active)"
                 await self.move_cb('error', _from, to, playerID, promotion, message)
