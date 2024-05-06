@@ -76,10 +76,10 @@ MIDDLEWARE = [
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:5173',
-    'render',
+    'https://psi4-8m9p.onrender.com'
 ] 
 
-CSRF_TRUSTED_ORIGINS = ['https://psi-o0g3.onrender.com']
+CSRF_TRUSTED_ORIGINS = ['https://psi4-8m9p.onrender.com']
 
 ROOT_URLCONF = 'mychess.urls'
 
