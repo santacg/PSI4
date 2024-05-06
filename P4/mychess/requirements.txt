@@ -68,7 +68,6 @@ pyparsing==3.0.9
 PyQt5==5.15.9
 PyQt5-sip==12.11.1
 PySimpleSOAP==1.16.2
-pysmbc==1.0.23
 python-apt==2.6.0
 python-chess==1.999
 python-dateutil==2.8.2
@@ -77,7 +76,6 @@ python-debianbts==4.0.1
 python-dotenv==1.0.0
 python3-openid==3.2.0
 pytz==2024.1
-pywal==3.3.0
 pyxattr==0.8.1
 redis==4.6.0
 reportbug==12.0.0
