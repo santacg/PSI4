@@ -29,7 +29,6 @@
 // fill free to modify the path to python3 and manage.py"
 const PYTHON = "/home/carlos/Code/PSI4/p4_venv/bin/python3"
 const MANAGE = "/home/carlos/Code/PSI4/P4/mychess/manage.py"
-const TEST_BOARD_SIZE_PX = 687;
 Cypress.Commands.add('delete_game', () => {
     var command = " # fill free to modify the path to python3 and manage.py" +
                 "\n" +

@@ -1,5 +1,5 @@
 <template>
-  <div class="container" data-cy="logoutPage"> <!-- This div now covers the whole page -->
+  <div class="container" data-cy="logoutPage">
     <div class="wrapper">
       <div class="log-out-text">
         <h2>You have successfully logged out of MyChess.</h2>

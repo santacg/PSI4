@@ -39,7 +39,7 @@ export default {
   setup() {
     const username = ref('');
     const password = ref('');
-    const errorMessage = ref(''); // Reactive property for error messages
+    const errorMessage = ref(''); 
 
     const logIn = async () => {
       const formData = {
@@ -61,7 +61,6 @@ export default {
         const data = await response.json();
 
         if (!response.ok) {
-          // Use the specific error message expected by the test
           errorMessage.value = 'Error: Invalid username or password';
           return;
         }
@@ -71,10 +70,9 @@ export default {
           store.setUserID(data.user_id);
           router.push('/creategame');
         } else {
-          errorMessage.value = 'Error: Authentication token not found'; // Handle unexpected missing token
+          errorMessage.value = 'Error: Authentication token not found'; 
         }
       } catch (error) {
-        // Handle unexpected errors
         errorMessage.value = `Error: ${error.message}`;
       }
     };

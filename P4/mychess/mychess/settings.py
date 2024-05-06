@@ -73,7 +73,11 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True 
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:5173',
+    'render',
+] 
 
 CSRF_TRUSTED_ORIGINS = ['https://psi-o0g3.onrender.com']
 

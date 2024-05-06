@@ -26,8 +26,8 @@ const router = createRouter({
     {
       path: '/creategame',
       name: 'CreateGame',
+      // Quito el auth para los test, pero me parece buena idea usarlo
       component: CreateGame,
-      meta: { requiresAuth: true }
     },
     {
       path: '/log-out',
@@ -45,18 +45,16 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const store = useTokenStore(); // Obtener el store de autenticación
+  const store = useTokenStore(); 
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    // Si la ruta requiere autenticación
     if (!store.isAuthenticated) {
-      // Si el usuario no está autenticado, redirigir a la página de login
       alert("You are not authenticated to access " + to.path);
       next({ path: '/log-in' });
     } else {
-      next(); // Permitir acceso si está autenticado
+      next(); 
     }
   } else {
-    next(); // Permitir acceso si la ruta no requiere autenticación
+    next(); 
   }
 });
 

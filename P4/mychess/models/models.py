@@ -27,15 +27,15 @@ class ChessGame(models.Model):
     ]
     # Campos de la partida
     status = models.CharField(
-        max_length=64, choices=STATUS_CHOICES, default='pending')
+        max_length=64, choices=STATUS_CHOICES, default='pending', null=True, blank=True)
     board_state = models.TextField(
-        default=DEFAULT_BOARD_STATE, help_text="Almacena la posición de las piezas en formato FEN")
+        default=DEFAULT_BOARD_STATE, null=True, blank=True, help_text="Almacena la posición de las piezas en formato FEN")
     start_time = models.DateTimeField(
         'Start', auto_now=True, null=True, blank=True, help_text="Game starting time")
     end_time = models.DateTimeField(
         'Ending', null=True, blank=True, help_text="Game ending time")
     timeControl = models.CharField(
-        'Time Control', max_length=50, help_text="Control de tiempo para cada jugador")
+        'Time Control', max_length=50, null=True, blank=True, help_text="Control de tiempo para cada jugador")
     whitePlayer = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='whitePlayer', on_delete=models.CASCADE, null=True, blank=True)
     blackPlayer = models.ForeignKey(

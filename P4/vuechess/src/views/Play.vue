@@ -13,17 +13,18 @@ const storeGame = useGameStore();
 const serverUrl = import.meta.env.VITE_DJANGOURL;
 const wsScheme = window.location.protocol === "https:" ? "wss://" : "ws://";
 const wsUrl = wsScheme + serverUrl + "ws/play/" + storeGame.game_id + '/token/' + storeToken.token + '/';
-console.log("url", wsUrl);
 const gameState = ref(null);
 const socket = new WebSocket(wsUrl);
 
 let boardAPI;
 const playerColor = storeGame.player_color;
+const winMsg = ref('');
 
 const boardConfig = reactive({
   coordinates: true,
   orientation: playerColor,
   viewOnly: true,
+  trustAllEvents: true,
 });
 
 onMounted(() => {
@@ -35,6 +36,7 @@ onMounted(() => {
         boardConfig.viewOnly = false;
       }
       else {
+        boardAPI?.setPosition(data.FEN);
         boardConfig.viewOnly = true;
       }
       alert("Status: " + data.status);
@@ -94,15 +96,16 @@ function scrollToBottom() {
 }
 
 function handleCheckmate(isMated) {
-  alert(`${isMated} is mated`);
+  const winner = isMated === 'white' ? 'Black' : 'White';
+  winMsg.value = `${winner} Wins`;
 }
 
 function handleStalemate() {
-  alert('Stalemate');
+  winMsg.value = 'Stalemate';
 }
 
 function handleDraw() {
-  alert('Draw');
+  winMsg.value = 'Draw';
 }
 </script>
 
@@ -112,6 +115,8 @@ function handleDraw() {
       <div class="game-info">
         <p class="game-id">Game ID: {{ storeGame.game_id }}</p>
         <p class="material-difference">Material Difference: {{ materialDifference }}</p>
+        <p data-cy="winMsg">{{ winMsg }}</p>
+        <button data-cy="createGame-button-in-play">PLAY NEW GAME</button>
       </div>
       <TheChessboard :board-config="boardConfig" :player-color="playerColor" @checkmate="handleCheckmate"
         @move="handleMove" @stalemate="handleStalemate" @promotion="handlePromotion" @draw="handleDraw"

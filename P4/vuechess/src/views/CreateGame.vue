@@ -13,6 +13,7 @@
           <label for="game-id">Enter gameID:</label>
           <input id="game-id" type="number">
         </div>
+        <div v-if="errorMessage" class="error-message" data-cy="error-message">{{ errorMessage }}</div>
       </form>
     </div>
   </div>
@@ -29,6 +30,7 @@ export default {
   setup() {
     const isGameIdVisible = ref(false);
     const selectedGameType = ref('');
+    const errorMessage = ref('');
 
     watch(selectedGameType, (newValue) => {
       isGameIdVisible.value = newValue === "Join specific game";
@@ -38,6 +40,12 @@ export default {
       const storeToken = useTokenStore();
       const gameStore = useGameStore();
       const serverUrl = import.meta.env.VITE_DJANGOURL;
+
+      if (storeToken.token === null) {
+        errorMessage.value = 'Error: Cannot create game';
+        return;
+      }
+
       try {
         const response = await fetch(window.location.protocol + "//" + serverUrl + 'api/v1/games/', {
           method: 'POST',
@@ -57,17 +65,17 @@ export default {
         gameStore.setPlayerColor(data.whitePlayer === storeToken.user_id ? 'white' : 'black');
 
         if (response.status === 201) {
-          // alert('Game created with ID: ' + gameStore.game_id + ' playing as ' + gameStore.player_color);
+          alert('Game created with ID: ' + gameStore.game_id + ' playing as ' + gameStore.player_color);
         } else {
-          // alert('Joined to existing as ' + gameStore.player_color + ' to a game with ID: ' + gameStore.game_id);
+          alert('Joined to existing as ' + gameStore.player_color + ' to a game with ID: ' + gameStore.game_id);
         }
         router.push('/play');
       } catch (error) {
-        alert(error);
+        errorMessage.value = error.message;
       }
     };
 
-    return { createGame, isGameIdVisible, selectedGameType };
+    return { createGame, isGameIdVisible, selectedGameType, errorMessage };
   },
 };
 </script>

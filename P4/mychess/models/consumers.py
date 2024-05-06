@@ -53,7 +53,7 @@ class ChessConsumer(AsyncWebsocketConsumer):
         else:
             await self.accept()
             await self.channel_layer.group_add(str(self.gameID), self.channel_name)
-            await self.game_cb('game', 'OK', self.game.status.upper(), self.user.id)
+            await self.game_cb('game', 'OK', self.game.status.upper(), self.user.id, self.game.board_state)
     # Recibe un mensaje del jugador
     async def receive(self, text_data):
         data = json.loads(text_data)
@@ -95,7 +95,7 @@ class ChessConsumer(AsyncWebsocketConsumer):
         else:
             return
     # Envía un mensaje a todos los jugadores
-    async def game_cb(self, _type, message, status, playerID):
+    async def game_cb(self, _type, message, status, playerID, boardState):
         await self.channel_layer.group_send(
             str(self.gameID),
             {
@@ -105,6 +105,7 @@ class ChessConsumer(AsyncWebsocketConsumer):
                     'message': message,
                     'status': status,
                     'playerID': playerID,
+                    'FEN': boardState,
                 }
             }
         )

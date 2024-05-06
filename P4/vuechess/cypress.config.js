@@ -18,7 +18,7 @@ module.exports = defineConfig({
     username: "user1@example.com",
     username2: "user2@example.com",
     password: "sacacorchos",
-    TEST_BOARD_SIZE_PX: 675.44 
+    TEST_BOARD_SIZE_PX: 675 
   }
 });
 
