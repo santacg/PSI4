@@ -49,7 +49,7 @@ export default {
       const store = useTokenStore();
       const serverUrl = import.meta.env.VITE_DJANGOURL;
       try {
-        const response = await fetch(serverUrl + 'mytokenlogin/',
+        const response = await fetch(window.location.protocol + "//" + serverUrl + 'api/v1/mytokenlogin/',
           {
             method: 'POST',
             headers: {

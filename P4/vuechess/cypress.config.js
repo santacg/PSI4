@@ -2,6 +2,8 @@ const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
   e2e: {
+    viewportHeight: 1080,
+    viewportWidth: 1920,
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
@@ -15,6 +17,8 @@ module.exports = defineConfig({
   env: {
     username: "user1@example.com",
     username2: "user2@example.com",
-    password: "sacacorchos"
+    password: "sacacorchos",
+    TEST_BOARD_SIZE_PX: 675.44 
   }
 });
+

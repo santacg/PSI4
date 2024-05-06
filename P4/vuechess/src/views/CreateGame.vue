@@ -39,7 +39,7 @@ export default {
       const gameStore = useGameStore();
       const serverUrl = import.meta.env.VITE_DJANGOURL;
       try {
-        const response = await fetch(serverUrl + 'games/', {
+        const response = await fetch(window.location.protocol + "//" + serverUrl + 'api/v1/games/', {
           method: 'POST',
           headers: {
             'Authorization': 'Token ' + storeToken.token,
@@ -52,6 +52,7 @@ export default {
         if (response.status !== 201 && response.status !== 200) {
           throw new Error(data.detail || 'Failed to create a game or join an existing one');
         }
+
         gameStore.setGameID(data.id);
         gameStore.setPlayerColor(data.whitePlayer === storeToken.user_id ? 'white' : 'black');
 

@@ -9,9 +9,13 @@ const moves = ref([]);
 const materialDifference = ref(null);
 const storeToken = useTokenStore();
 const storeGame = useGameStore();
-const url = 'ws://localhost:8000/ws/play/' + storeGame.game_id + '/token/' + storeToken.token + '/';
+
+const serverUrl = import.meta.env.VITE_DJANGOURL;
+const wsScheme = window.location.protocol === "https:" ? "wss://" : "ws://";
+const wsUrl = wsScheme + serverUrl + "ws/play/" + storeGame.game_id + '/token/' + storeToken.token + '/';
+console.log("url", wsUrl);
 const gameState = ref(null);
-const socket = new WebSocket(url);
+const socket = new WebSocket(wsUrl);
 
 let boardAPI;
 const playerColor = storeGame.player_color;
@@ -39,7 +43,7 @@ onMounted(() => {
       boardAPI?.move({ from: data.from, to: data.to, promotion: data.promotion });
     }
     else {
-      alert("Error: " + data.message + " Status: " + data.status + " PlayerID: " + data.playerID);
+      alert(data.message + " Status: " + data.status + " PlayerID: " + data.playerID);
       boardAPI?.undoLastMove();
     }
   }
@@ -60,23 +64,26 @@ function sendMove(move) {
 };
 
 function handleMove(move) {
-  const lastMove = moves.value[moves.value.length - 1];
-  if (move.color === "w") {
-    moves.value.push({ white: move.san, black: '' });
-  } else if (lastMove && lastMove.black === '') {
-    lastMove.black = move.san;
-  } else {
-    moves.value.push({ white: '', black: move.san });
-  }
-
-  scrollToBottom();
-
   const moveColor = move.color === 'w' ? 'white' : 'black';
   if (moveColor === playerColor)
     sendMove(move);
 
+  updateMoveTable(move)
+
   const materialCounts = boardAPI?.getMaterialCount();
   materialDifference.value = materialCounts ? materialCounts.materialDiff : 0;
+}
+
+function updateMoveTable(move) {
+  const lastMove = moves.value[moves.value.length - 1];
+  if (move.color === "w") {
+    moves.value.push({ white: move.lan, black: '' });
+  } else if (lastMove && lastMove.black === '') {
+    lastMove.black = move.lan;
+  } else {
+    moves.value.push({ white: '', black: move.lan });
+  }
+  scrollToBottom();
 }
 
 function scrollToBottom() {
@@ -183,7 +190,8 @@ td {
   color: whitesmoke;
 }
 
-.game-id, .material-difference {
+.game-id,
+.material-difference {
   font-size: 14px;
   font-weight: bold;
 }

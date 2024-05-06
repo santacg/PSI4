@@ -45,7 +45,7 @@ def _init(consumerFirst=True):
 async def _main(user, token, game, moves, consumerFirst=True):
     # 1) connect to websocket
     websocket = await websockets.connect(
-        ws_url + f"{game.id}/?{token.key}")
+        ws_url + f"{game.id}/token/{token.key}/")
     # 1.1) server should return a game message
     print("#### reading conecting message")
     message = await websocket.recv()

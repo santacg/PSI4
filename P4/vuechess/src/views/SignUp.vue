@@ -12,7 +12,8 @@
             <input type="password" placeholder="Password" id="password" data-cy="password1" v-model="password" required>
           </div>
           <div class="input-box">
-            <input type="password" placeholder="Confirm Password" id="confirmPassword" data-cy="password2" v-model="confirmPassword" required>
+            <input type="password" placeholder="Confirm Password" id="confirmPassword" data-cy="password2"
+              v-model="confirmPassword" required>
           </div>
         </div>
         <button type="submit" class="btn" data-cy="signup-button">Sign Up</button>
@@ -46,7 +47,7 @@ export default {
 
       const serverUrl = import.meta.env.VITE_DJANGOURL;
       try {
-        const response = await fetch(serverUrl + 'users/', {
+        const response = await fetch(window.location.protocol + "//" + serverUrl + 'api/v1/users/', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
