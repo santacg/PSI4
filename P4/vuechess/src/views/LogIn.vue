@@ -17,18 +17,18 @@
         <h1>MyChess Log In</h1>
         <div class="input-boxes">
           <div class="input-box">
-            <input type="text" placeholder="Email Address" id="username" v-model="username" required>
+            <input type="text" placeholder="Email Address" id="username" data-cy="username" v-model="username" required>
           </div>
           <div class="input-box">
-            <input type="password" placeholder="Password" id="password" v-model="password" required>
+            <input type="password" placeholder="Password" id="password" data-cy="password" v-model="password" required>
           </div>
         </div>
-        <button type="submit" class="btn">Log In</button>
+        <button type="submit" class="btn" data-cy="login-button">Log In</button>
+        <div v-if="errorMessage" class="error-message" data-cy="error-message">{{ errorMessage }}</div>
       </form>
     </div>
   </div>
 </template>
-
 <script>
 import { ref } from 'vue';
 import { useTokenStore } from '@/stores/token';
@@ -36,10 +36,10 @@ import router from '../router';
 
 export default {
   name: 'LogIn',
-
   setup() {
     const username = ref('');
     const password = ref('');
+    const errorMessage = ref(''); // Reactive property for error messages
 
     const logIn = async () => {
       const formData = {
@@ -47,9 +47,9 @@ export default {
         username: username.value,
       };
       const store = useTokenStore();
-      const baseUrl = 'http://localhost:8000/api/v1/'; //mala práctica: debe hacerse una variable de entorno
+      const serverUrl = import.meta.env.VITE_DJANGOURL;
       try {
-        const response = await fetch(baseUrl + 'mytokenlogin/',
+        const response = await fetch(serverUrl + 'mytokenlogin/',
           {
             method: 'POST',
             headers: {
@@ -61,36 +61,33 @@ export default {
         const data = await response.json();
 
         if (!response.ok) {
-          if (data.non_field_errors) {
-            throw new Error(data.non_field_errors);
-          }
-          else {
-            throw new Error('Log in unsuccesfull');
-          }
+          // Use the specific error message expected by the test
+          errorMessage.value = 'Error: Invalid username or password';
+          return;
         }
 
         if (data && data.auth_token) {
           store.setToken(data.auth_token);
           store.setUserID(data.user_id);
-          alert('Log in succesfull! redirecting to game creation');
           router.push('/creategame');
         } else {
-          throw new Error('Authentication token not found');
+          errorMessage.value = 'Error: Authentication token not found'; // Handle unexpected missing token
         }
       } catch (error) {
-        alert(error);
+        // Handle unexpected errors
+        errorMessage.value = `Error: ${error.message}`;
       }
     };
 
     return {
       username,
       password,
+      errorMessage,
       logIn,
     };
   },
 };
 </script>
-
 
 <style scoped>
 .container {

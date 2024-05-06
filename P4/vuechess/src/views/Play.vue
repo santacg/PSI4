@@ -112,7 +112,7 @@ function handleDraw() {
     </div>
     <div class="moves-box">
       <div class="wrapper">
-        <table>
+        <table data-cy="moveTable">
           <thead>
             <tr>
               <th>#</th>

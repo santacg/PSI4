@@ -5,16 +5,17 @@
         <h1>Mychess Sign Up</h1>
         <div class="input-boxes">
           <div class="input-box">
-            <input type="text" placeholder="Email Address" id="emailAddress" v-model="emailAddress" required>
+            <input type="text" placeholder="Email Address" id="emailAddress" data-cy="username" v-model="emailAddress"
+              required>
           </div>
           <div class="input-box">
-            <input type="password" placeholder="Password" id="password" v-model="password" required>
+            <input type="password" placeholder="Password" id="password" data-cy="password1" v-model="password" required>
           </div>
           <div class="input-box">
-            <input type="password" placeholder="Confirm Password" id="confirmPassword" v-model="confirmPassword" required>
+            <input type="password" placeholder="Confirm Password" id="confirmPassword" data-cy="password2" v-model="confirmPassword" required>
           </div>
         </div>
-        <button type="submit" class="btn">Sign Up</button>
+        <button type="submit" class="btn" data-cy="signup-button">Sign Up</button>
       </form>
     </div>
   </div>
@@ -43,9 +44,9 @@ export default {
         password: password.value,
       };
 
-      const baseUrl = 'http://localhost:8000/api/v1/'
+      const serverUrl = import.meta.env.VITE_DJANGOURL;
       try {
-        const response = await fetch(baseUrl + 'users/', {
+        const response = await fetch(serverUrl + 'users/', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',

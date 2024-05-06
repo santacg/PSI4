@@ -3,97 +3,74 @@
     <div class="wrapper">
       <form class="create-game-box" @submit.prevent="createGame">
         <h1>Create a chess game!</h1>
-        <select name="game-selection">
+        <select name="game-selection" v-model="selectedGameType" id="selectGame" data-cy="selectGame">
           <option hidden>Select a game type</option>
-          <option value="random-game">Join any game</option>
-          <option value="id-game">Join specific game</option>
+          <option value="game_join_any">Join any game</option>
+          <option value="Join specific game">Join specific game (gameID required)</option>
         </select>
-        <button type="submit" class="btn">Join!</button>
-        <div class="game-id" style="display: none; ">
-          <label class="game-id-label" for="game-id">Enter your game ID: </label>
-          <input type="number">
+        <button type="submit" class="btn" data-cy="createGame-button">Join!</button>
+        <div v-if="isGameIdVisible" data-cy="gameID">
+          <label for="game-id">Enter gameID:</label>
+          <input id="game-id" type="number">
         </div>
       </form>
     </div>
   </div>
 </template>
 
-
 <script>
+import { ref, watch } from 'vue';
 import { useTokenStore } from '@/stores/token';
 import { useGameStore } from '@/stores/game';
 import router from '../router';
 
-/* Despliegue del ID al pulsar la opción "Join a friend's game" */
-/* PROBLEMA: No se despliega al estar logueado*/
-document.addEventListener('DOMContentLoaded', function () {
-  const selection = document.querySelector('select[name="game-selection"]');
-  const gameIdSection = document.querySelector('.game-id');
-
-  gameIdSection.style.display = 'none';
-
-  selection.addEventListener('change', function () {
-    if (selection.value === 'id-game') {
-      gameIdSection.style.display = 'block';
-    } else {
-      gameIdSection.style.display = 'none';
-    }
-  });
-});
-
 export default {
   name: 'CreateGame',
   setup() {
+    const isGameIdVisible = ref(false);
+    const selectedGameType = ref('');
+
+    watch(selectedGameType, (newValue) => {
+      isGameIdVisible.value = newValue === "Join specific game";
+    });
+
     const createGame = async () => {
       const storeToken = useTokenStore();
       const gameStore = useGameStore();
-      const baseUrl = 'http://localhost:8000/api/v1';
+      const serverUrl = import.meta.env.VITE_DJANGOURL;
       try {
-        const response = await fetch(baseUrl + '/games/', {
+        const response = await fetch(serverUrl + 'games/', {
           method: 'POST',
           headers: {
-            'Authorization': 'token ' + storeToken.token,
+            'Authorization': 'Token ' + storeToken.token,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ user_id: storeToken.user_id }),
         });
         const data = await response.json();
-
         if (response.status !== 201 && response.status !== 200) {
-          if (data.detail) {
-            throw new Error(data.detail);
-          }
-          else {
-            throw new Error('Failed to create a game or join an existing one');
-          }
+          throw new Error(data.detail || 'Failed to create a game or join an existing one');
         }
-
         gameStore.setGameID(data.id);
-        if (data.whitePlayer === storeToken.user_id) {
-          gameStore.setPlayerColor('white');
-        }
-        else {
-          gameStore.setPlayerColor('black');
-        }
+        gameStore.setPlayerColor(data.whitePlayer === storeToken.user_id ? 'white' : 'black');
 
         if (response.status === 201) {
-          alert('Game created with ID: ' + gameStore.game_id + '  playing as ' + gameStore.player_color);
-          router.push('/play');
+          // alert('Game created with ID: ' + gameStore.game_id + ' playing as ' + gameStore.player_color);
+        } else {
+          // alert('Joined to existing as ' + gameStore.player_color + ' to a game with ID: ' + gameStore.game_id);
         }
-        else {
-          alert('Joined to existing as ' + gameStore.player_color + ' to a game with ID: ' + gameStore.game_id);
-          router.push('/play');
-        }
+        router.push('/play');
       } catch (error) {
         alert(error);
       }
     };
 
-    return { createGame };
+    return { createGame, isGameIdVisible, selectedGameType };
   },
 };
 </script>
+
 
 <style scoped>
 .container {

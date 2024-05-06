@@ -8,6 +8,7 @@ module.exports = defineConfig({
     // append baseUrl to all URL used in the tests
     baseUrl: "http://localhost:5173",
     //specPattern: "cypress/e2e/**/*.{js,jsx,ts,tsx}",
+    supportFile: 'cypress/support/commands.js',
   },
   // centralice some variables as username and password
   // use then in the test with "Cypress.env('username')"

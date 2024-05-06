@@ -1,10 +1,9 @@
 <template>
-  <div class="container">
+  <div class="container" data-cy="logoutPage"> <!-- This div now covers the whole page -->
     <div class="wrapper">
       <div class="log-out-text">
-        <h2>You logged out of MyChess</h2>
-        <br>
-        <p>You will be redirected to the main page in 5 seconds</p>
+        <h2>You have successfully logged out of MyChess.</h2>
+        <p>Log Out successful. You will be redirected to the main page in 5 seconds.</p>
       </div>
     </div>
   </div>
@@ -19,23 +18,21 @@ export default {
   name: 'LogOut',
 
   setup() {
-    const LogOut = async () => {
-      const baseUrl = 'http://localhost:8000/api/v1/';
+    const logOut = async () => {
+      const serverUrl = import.meta.env.VITE_DJANGOURL;
       const store = useTokenStore();
       try {
-        const response = await fetch(baseUrl + 'token/logout/',
-          {
-            method: 'POST',
-            headers: {
-              'Authorization': 'token ' + store.token,
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-          });
+        const response = await fetch(serverUrl + 'token/logout/', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'token ' + store.token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+        });
 
         if (response.status === 204) {
           store.removeToken();
-          alert('Log out sucessfull, redirecting to home page');
           setTimeout(() => router.push('/log-in'), 5000);
         } else {
           throw new Error('Failed to log out');
@@ -44,16 +41,16 @@ export default {
         alert(error);
       }
     };
-    onBeforeMount(() => {
-      LogOut();
-    });
+
+    onBeforeMount(logOut);
 
     return {
-      LogOut,
+      logOut,
     };
   }
 };
 </script>
+
 
 <style scoped>
 .container {

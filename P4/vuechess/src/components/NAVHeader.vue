@@ -8,7 +8,7 @@
         <a><router-link class="signUp" to="/sign-up">Sign Up</router-link></a>
       </li>
       <li class="nav-item">
-        <a><router-link class="logOut" to="/log-out" v-if="store.isAuthenticated">Log Out</router-link></a>
+        <a><router-link class="logOut" data-cy="logOutLink" to="/log-out" v-if="store.isAuthenticated">Log Out</router-link></a>
       </li>
       <li class="nav-item">
         <a><router-link class="createGame" to="/creategame" v-if="store.isAuthenticated">Create Game</router-link></a>
