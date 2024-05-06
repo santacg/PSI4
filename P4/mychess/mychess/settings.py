@@ -79,7 +79,7 @@ CORS_ORIGIN_WHITELIST = [
     'https://psi4-8m9p.onrender.com'
 ] 
 
-CSRF_TRUSTED_ORIGINS = ['https://psi4-8m9p.onrender.com']
+CSRF_TRUSTED_ORIGINS = ['https://psi4-8m9p.onrender.com', 'https://psi4-django.onrender.com']
 
 ROOT_URLCONF = 'mychess.urls'
 
